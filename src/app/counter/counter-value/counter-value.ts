@@ -19,6 +19,7 @@ export class CounterValue implements OnInit ,OnDestroy{
   
   ngOnInit() {
     this.counterSubscription = this.store.select('counter').subscribe((data) => {
+      console.log('Counter Observable Changed: ', data);
       this.counter = data.counter;
     });
   }
