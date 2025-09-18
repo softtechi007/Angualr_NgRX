@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CounterState } from '../states/counter.state';
-import { customIncrement, toggleCustomInput } from '../states/counter.actions';; // NgIf is deprecated, use @if block in template instead
+import { customIncrement, toggleCustomInput } from '../states/counter.actions';
+import { getToggle } from '../states/counter.selector';
+// NgIf is deprecated, use @if block in template instead
 
 @Component({
   selector: 'app-custom-input',
@@ -18,9 +20,9 @@ export class CustomInput  implements OnInit {
   showCustomInput: boolean = false;
 
   ngOnInit() {
-    this.store.select('counter').subscribe((data) => {
-      console.log('Toggle Observable Changed: ', data);
-      this.showCustomInput = data.toggle;
+    this.store.select(getToggle).subscribe((toggle) => {
+      console.log('Toggle Observable Changed: ', toggle);
+      this.showCustomInput = toggle;
     });
   }
 
