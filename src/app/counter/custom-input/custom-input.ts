@@ -4,11 +4,13 @@ import { Store } from '@ngrx/store';
 import { CounterState } from '../states/counter.state';
 import { customIncrement, toggleCustomInput } from '../states/counter.actions';
 import { getToggle } from '../states/counter.selector';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 // NgIf is deprecated, use @if block in template instead
 
 @Component({
   selector: 'app-custom-input',
-  imports: [FormsModule],
+  imports: [FormsModule,AsyncPipe],
   templateUrl: './custom-input.html',
   styleUrl: './custom-input.css'
 })
@@ -17,13 +19,10 @@ export class CustomInput  implements OnInit {
     private store: Store<{ counter: CounterState }>
   ) {}
   customValue: number = 0;
-  showCustomInput: boolean = false;
+  showCustomInput$: Observable<boolean> | null = null;
 
   ngOnInit() {
-    this.store.select(getToggle).subscribe((toggle) => {
-      console.log('Toggle Observable Changed: ', toggle);
-      this.showCustomInput = toggle;
-    });
+    this.showCustomInput$ = this.store.select(getToggle);
   }
 
   onCustomValueButtonClicked() {
